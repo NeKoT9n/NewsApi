@@ -1,0 +1,17 @@
+﻿using Microsoft.EntityFrameworkCore;
+using NewsApi.DataAccess.Entities;
+
+namespace NewsApi.DataAccess;
+
+public class NewsDbContext(DbContextOptions<NewsDbContext> options) : DbContext(options)
+{
+    public DbSet<NewsEntity> News => Set<NewsEntity>();
+    public DbSet<CategoryEntity> Categories => Set<CategoryEntity>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(NewsDbContext).Assembly);
+        
+        base.OnModelCreating(modelBuilder);
+    }
+}
