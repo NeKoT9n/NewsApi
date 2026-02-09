@@ -53,3 +53,14 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Скомпилированный код
+bin/
+obj/
+
+# Пользовательские настройки
+*.user
