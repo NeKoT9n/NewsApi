@@ -13,6 +13,7 @@ services.AddOpenApi();
 services.AddSwaggerGen();
 
 services.UseNpgsqlDbContext(configuration);
+services.RegisterServices(configuration);
 
 var app = builder.Build();
 

@@ -10,9 +10,6 @@ public class CategoryConfiguration : IEntityTypeConfiguration<CategoryEntity>
     {
         builder.HasKey(x => x.Id);
         
-        builder.HasMany(x => x.News)
-            .WithMany(x => x.Categories);
-        
         builder.Property(x => x.Name).IsRequired().HasMaxLength(64);
 
         List<CategoryEntity> categoriesByDefault =

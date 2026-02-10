@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="NewsApi.Application/NewsApi.Application.csproj" />
   <Project Path="NewsApi.DataAccess/NewsApi.DataAccess.csproj" />
   <Project Path="NewsApi.Domain/NewsApi.Domain.csproj" />
   <Project Path="NewsApi/NewsApi.csproj" />

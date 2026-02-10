@@ -16,12 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NewsApi.Application\NewsApi.Application.csproj" />
     <ProjectReference Include="..\NewsApi.DataAccess\NewsApi.DataAccess.csproj" />
     <ProjectReference Include="..\NewsApi.Domain\NewsApi.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

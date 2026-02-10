@@ -1,15 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NewsApi.DataAccess;
+using NewsApi.DataAccess.Repositories;
+using NewsApi.Domain.Abstractions;
 
 namespace NewsApi;
 
 public static class AppExtensions
 {
-    public static void UseNpgsqlDbContext(this IServiceCollection services, IConfiguration configuration)
+    extension(IServiceCollection services)
     {
-        services.AddDbContext<NewsDbContext>(options =>
+        public void UseNpgsqlDbContext(IConfiguration configuration)
         {
-            options.UseNpgsql(configuration.GetConnectionString(nameof(NewsDbContext)));
-        });
+            services.AddDbContext<NewsDbContext>(options =>
+            {
+                options.UseNpgsql(configuration.GetConnectionString(nameof(NewsDbContext)));
+            });
+        }
+
+        public void RegisterServices(IConfiguration configuration)
+        {
+            services.AddScoped<INewsRepository, NewsRepository>();
+        }
     }
 }

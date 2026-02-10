@@ -5,24 +5,26 @@ public class News
     public long Id { get; }
     public string Title { get; }
     public string Content { get; }
-    public IReadOnlyCollection<Category> Categories { get; }
-    public Sentiment Sentiment { get; }
-    public float SentimentScore { get; }
     public DateTime PublishedAt { get; } 
+    public IReadOnlyCollection<Category> Categories { get; }
+    public IReadOnlyCollection<Rating> Ratings { get; }
+    public Sentiment Sentiment { get; set; }
     
     private News(
         long id,
         string title,
         string content,
         IReadOnlyCollection<Category> categories,
-        DateTime publishedAt, float sentimentScore, Sentiment sentiment)
+        IReadOnlyCollection<Rating> ratings,
+        Sentiment sentiment,
+        DateTime publishedAt)
     {
         Id = id;
         Title = title;
         Content = content;
         Categories = categories;
         PublishedAt = publishedAt;
-        SentimentScore = sentimentScore;
+        Ratings = ratings;
         Sentiment = sentiment;
     }
 
@@ -31,13 +33,22 @@ public class News
         string title,
         string content,
         IReadOnlyCollection<Category> categories,
-        DateTime publishedAt,
+        IReadOnlyCollection<Rating> ratings,
         Sentiment sentiment,
-        float sentimentScore)
+        DateTime publishedAt)
     {
         //TODO: Validate parameters
         
-        return new News(id, title, content, categories, publishedAt, sentimentScore, sentiment);
+        return new News(id, title, content, categories, ratings, sentiment, publishedAt);
+    }
+    
+    public static News Create(
+        string title,
+        string content,
+        IReadOnlyCollection<Category> categories
+        )
+    {
+        return Create(-1, title, content, categories, [], null, DateTime.UtcNow);
     }
     
     

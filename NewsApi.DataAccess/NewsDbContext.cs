@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NewsApi.DataAccess.Entities;
+using NewsApi.Domain.Models;
 
 namespace NewsApi.DataAccess;
 
@@ -10,6 +11,7 @@ public class NewsDbContext(DbContextOptions<NewsDbContext> options) : DbContext(
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresEnum<SentimentType>();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(NewsDbContext).Assembly);
         
         base.OnModelCreating(modelBuilder);

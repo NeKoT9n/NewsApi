@@ -12,12 +12,22 @@ public class NewsConfiguration : IEntityTypeConfiguration<NewsEntity>
 
         builder
             .HasMany(x => x.Categories)
-            .WithMany(x => x.News);
+            .WithMany(x => x.News)
+            .UsingEntity(j => j.ToTable("NewsCategories"));
+        
+        builder
+            .HasMany(x => x.Ratings)
+            .WithOne(x => x.News)
+            .HasForeignKey(x => x.NewsId);
+
+        builder
+            .HasOne(x => x.Sentiment)
+            .WithOne(x => x.News)
+            .HasForeignKey<SentimentEntity>(x => x.NewsId);
         
         builder.Property(x => x.Title).IsRequired().HasMaxLength(256);
-        builder.Property(x => x.Content).IsRequired().HasMaxLength(10000);
+        builder.Property(x => x.Content).IsRequired();
         builder.Property(x => x.PublishedAt).IsRequired();
-        builder.Property(x => x.Sentiment).IsRequired();
-        builder.Property(x => x.SentimentScore).IsRequired();
     }
+    
 }
