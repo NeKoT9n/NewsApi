@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yaml" />
+  </Folder>
   <Project Path="NewsApi.Application/NewsApi.Application.csproj" />
   <Project Path="NewsApi.DataAccess/NewsApi.DataAccess.csproj" />
   <Project Path="NewsApi.Domain/NewsApi.Domain.csproj" />

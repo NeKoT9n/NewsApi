@@ -1,0 +1,55 @@
+﻿services:
+  news-api:
+    build:
+      context: .
+      dockerfile: NewsApi/Dockerfile
+    container_name: news-api
+    ports:
+      - "5000:8080" 
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=news-db;Database=news_db;Username=admin;Password=secret
+      - MessageBroker__Host=rabbitmq
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - news-db
+      - rabbitmq
+    networks:
+      - news-shared-net
+
+  news-db:
+    image: postgres:16-alpine
+    container_name: news-db
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=news_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - news_db_data:/var/lib/postgresql/data
+    networks:
+      - news-shared-net
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"   
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - news-shared-net
+
+volumes:
+  news_db_data:
+  rabbitmq_data:
+    
+networks:
+  news-shared-net:
+    external: true
