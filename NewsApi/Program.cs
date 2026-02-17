@@ -12,8 +12,13 @@ services.AddControllers();
 services.AddOpenApi();
 services.AddSwaggerGen();
 
+services.RegisterOptions(configuration);
+services.RegisterServices();
+services.RegisterMappers();
+
+
 services.UseNpgsqlDbContext(configuration);
-services.RegisterServices(configuration);
+services.RegisterMessageBroker();
 
 var app = builder.Build();
 

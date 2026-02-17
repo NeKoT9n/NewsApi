@@ -11,6 +11,7 @@ COPY ["NewsApi/NewsApi.csproj", "NewsApi/"]
 COPY ["NewsApi.DataAccess/NewsApi.DataAccess.csproj", "NewsApi.DataAccess/"]
 COPY ["NewsApi.Domain/NewsApi.Domain.csproj", "NewsApi.Domain/"]
 COPY ["NewsApi.Application/NewsApi.Application.csproj", "NewsApi.Application/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
 RUN dotnet restore "NewsApi/NewsApi.csproj"
 COPY . .
 WORKDIR "/src/NewsApi"

@@ -2,8 +2,8 @@
 
 public class RatingEntity
 {
-    public long Id { get; set; }
-    public long NewsId { get; set; }
-    public NewsEntity News { get; set; } = null!;
-    public float Value { get; set; }
+    public long Id { get; init; }
+    public long NewsId { get; init; }
+    public NewsEntity News { get; init; } = null!;
+    public float Value { get; init; }
 }

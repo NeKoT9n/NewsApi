@@ -8,9 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+      <PackageReference Include="MediatR" Version="14.0.0" />
+      <PackageReference Include="Riok.Mapperly" Version="5.0.0-next.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NewsApi.DataAccess\NewsApi.DataAccess.csproj" />
+      <ProjectReference Include="..\NewsApi.Domain\NewsApi.Domain.csproj" />
     </ItemGroup>
 
 </Project>

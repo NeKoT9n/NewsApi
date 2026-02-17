@@ -20,23 +20,8 @@ namespace NewsApi.DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "sentiment_type", new[] { "positive", "neutral", "negative" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "sentiment_type", new[] { "positive", "neutral", "negative", "mixed" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("CategoryEntityNewsEntity", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("NewsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("CategoriesId", "NewsId");
-
-                    b.HasIndex("NewsId");
-
-                    b.ToTable("NewsCategories", (string)null);
-                });
 
             modelBuilder.Entity("NewsApi.DataAccess.Entities.CategoryEntity", b =>
                 {
@@ -81,6 +66,9 @@ namespace NewsApi.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
@@ -94,6 +82,8 @@ namespace NewsApi.DataAccess.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("News");
                 });
@@ -135,19 +125,13 @@ namespace NewsApi.DataAccess.Migrations
                     b.ToTable("SentimentEntity");
                 });
 
-            modelBuilder.Entity("CategoryEntityNewsEntity", b =>
+            modelBuilder.Entity("NewsApi.DataAccess.Entities.NewsEntity", b =>
                 {
-                    b.HasOne("NewsApi.DataAccess.Entities.CategoryEntity", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("NewsApi.DataAccess.Entities.CategoryEntity", "Category")
+                        .WithMany("News")
+                        .HasForeignKey("CategoryId");
 
-                    b.HasOne("NewsApi.DataAccess.Entities.NewsEntity", null)
-                        .WithMany()
-                        .HasForeignKey("NewsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("NewsApi.DataAccess.Entities.RatingEntity", b =>
@@ -169,6 +153,11 @@ namespace NewsApi.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("News");
+                });
+
+            modelBuilder.Entity("NewsApi.DataAccess.Entities.CategoryEntity", b =>
+                {
                     b.Navigation("News");
                 });
 

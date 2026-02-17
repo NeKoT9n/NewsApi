@@ -1,59 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using NewsApi.Application.Dto;
-using NewsApi.Domain.Abstractions;
-using NewsApi.Domain.Models;
-using NewsApi.Dtos;
+using NewsApi.Application.Features.Commands;
+using NewsApi.Application.Features.Queries;
 
 namespace NewsApi.Controllers;
 
 [ApiController]
 [Route("news")]
-public class NewsController(INewsRepository repository) : ControllerBase
+public class NewsController(IMediator mediator) : ControllerBase
 {
     
     [HttpGet("{id:long}")]
     public async Task<ActionResult<NewsWithCategoriesDto>> GetNewsWithCategories(long id)
     {
-
-        var model = await repository.GetNewsWithCategoriesById(id);
-
-        var response = new NewsWithCategoriesDto(
-            model.Title,
-            model.Content,
-            model.Categories
-                .Select(c => new CategoryDto(c.Name))
-                .ToList());
+        var result = await mediator.Send(new GetNewsByIdQuery(id));
         
-        return Ok(response);
+        if(result.IsFailure)
+            return BadRequest(result.Error);
+        
+        return Ok(result.Value);
+        
     }
     
     [HttpGet("category/{categoryId:int}")]
-    public async Task<ActionResult<NewsDto>> GetNewsByCategory(int categoryId)
+    public async Task<ActionResult> GetNewsByCategory(int categoryId)
     {
-
-        var model = await repository.GetNewsByCategory(categoryId);
-
-        var response = model.Select(n => new NewsDto(
-            n.Title,
-            n.Content));
-        
-        return Ok(response);
+        return Ok();
     }
     
     [HttpPost("new")]
-    public async Task<ActionResult<long>> AddNews([FromBody] CreateNewsRequest request)
+    public async Task<ActionResult<long>> AddNews([FromBody] CreateNewsCommand request)
     {
-
-        var categories = new List<Category>();
-        
-        foreach (var categoryId in request.CategoriesId)
-            categories.Add(Category.Create(categoryId));
-
-        var newsToCreate = News.Create(request.Title, request.Content, categories);
-          
-        var response = await repository.AddNews(newsToCreate);
-            
-        return Ok(response);
+        var result = await mediator.Send(request);
+        return Ok(result.Value);
     }
     
 

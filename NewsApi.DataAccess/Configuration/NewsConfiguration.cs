@@ -11,9 +11,8 @@ public class NewsConfiguration : IEntityTypeConfiguration<NewsEntity>
         builder.HasKey(x => x.Id);
 
         builder
-            .HasMany(x => x.Categories)
-            .WithMany(x => x.News)
-            .UsingEntity(j => j.ToTable("NewsCategories"));
+            .HasOne(x => x.Category)
+            .WithMany(x => x.News);
         
         builder
             .HasMany(x => x.Ratings)
@@ -26,8 +25,6 @@ public class NewsConfiguration : IEntityTypeConfiguration<NewsEntity>
             .HasForeignKey<SentimentEntity>(x => x.NewsId);
         
         builder.Property(x => x.Title).IsRequired().HasMaxLength(256);
-        builder.Property(x => x.Content).IsRequired();
-        builder.Property(x => x.PublishedAt).IsRequired();
     }
     
 }
